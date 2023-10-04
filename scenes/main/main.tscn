@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bu74ty4bpemmx"]
+
+[ext_resource type="PackedScene" uid="uid://dciq0uowlx2p7" path="res://scenes/main/render.tscn" id="1_7t1ic"]
+[ext_resource type="PackedScene" uid="uid://bohjbmmgn0ue5" path="res://scenes/remote/remote.tscn" id="1_m58fd"]
+
+[node name="main" type="Node"]
+
+[node name="remote" parent="." instance=ExtResource("1_m58fd")]
+
+[node name="render" parent="." instance=ExtResource("1_7t1ic")]
