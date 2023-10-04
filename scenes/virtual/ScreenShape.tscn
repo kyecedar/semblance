@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dswmb1wsy7hl1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_etimq"]
+
+[node name="ScreenShape" type="CharacterBody2D"]
+motion_mode = 1
+slide_on_ceiling = false
+
+[node name="collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_etimq")

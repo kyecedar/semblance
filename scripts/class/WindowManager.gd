@@ -41,14 +41,6 @@ func in_bounds() -> bool:
 	
 	return false
 
-static func get_monitor_count() -> int:
-	return DisplayServer.get_screen_count()
-
-## Get monitor from coords.
-static func get_monitor_(coords: Vector2) -> int:
-	
-	pass
-
 #endregion 󰍺 MONITORS.
 
 #region // 󰁌 POSITION & SIZE.
