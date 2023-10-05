@@ -26,7 +26,6 @@ static var temp : String ## Used during etch string construction.
 ## Push to log and file.
 static func etch(text: String, system: String = "", status: TYPE = TYPE.INFO) -> void:
 	
-	
 	print_rich()
 
 static func get_status_string(status: TYPE) -> String:

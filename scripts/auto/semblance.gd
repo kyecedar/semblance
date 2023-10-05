@@ -7,7 +7,6 @@ func setup() -> void:
 
 func _ready() -> void:
 	# first-time setup.
-	pass
 	
 	# both in-editor and in-game.
 	pass
