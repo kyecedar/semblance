@@ -7,27 +7,39 @@ func setup() -> void:
 
 func _ready() -> void:
 	# first-time setup.
-	
+	pass
 	
 	# both in-editor and in-game.
 	pass
 	
 	# in-editor.
 	if Engine.is_editor_hint():
-		process = editor_process
 		return
 	
 	# in-game.
-	pass
-
-static var editor_process : Callable = func(_delta: float) -> void:
-	pass
-
-static var process : Callable = func(_delta: float) -> void:
-	pass
+	#var bingus : String = "user://test.gd"
+	#var script : Node = load(bingus).new()
+	#if script:
+	#	if script.has_method("doTheTest"):
+	#		script.doTheTest()
+	update_display_shapes()
 
 func _process(delta: float) -> void:
-	process.call(delta)
+	# both in-editor and in-game.
+	
+	# in-editor.
+	if Engine.is_editor_hint():
+		editor_process(delta)
+		return
+	
+	# in-game
+	game_process(delta)
+
+static func editor_process(delta: float) -> void:
+	pass
+
+static func game_process(delta: float) -> void:
+	pass
 
 #region // 󰍺 MONITORS & WINDOWS.
 
@@ -46,24 +58,21 @@ static func update_display_shapes() -> void:
 	update_negative_shapes()
 	update_window_shapes()
 
+## Update the screen count, sizes, and positions.
 static func update_screen_shapes() -> void:
 	# ensure an equal amount of nodes under screens node.
-	var screen_diff : int = display_screen_shapes.size() - DisplayServer.get_screen_count()
+	display_screen_shapes = []
 	
-	for i: int in abs(screen_diff): # never enters loop when 0.
-		# add screens.
-		if screen_diff < 0:
-			display_screen_shapes.push_back(Rect2i())
-			continue
-		
-		# remove screens.
-		display_screen_shapes.remove_at(display_screen_shapes.size() - 1)
+	for i: int in DisplayServer.get_screen_count():
+		display_screen_shapes.push_back(Rect2i())
+	
 	
 	# loop through screens and update position and sizes.
 	for i: int in display_screen_shapes.size():
 		display_screen_shapes[i].position = DisplayServer.screen_get_position(i)
 		display_screen_shapes[i].size = DisplayServer.screen_get_size(i)
 
+## Updates the shapes outside of the screens.
 static func update_negative_shapes() -> void:
 	display_negative_shapes = []
 	
@@ -84,7 +93,7 @@ static func update_negative_shapes() -> void:
 		# BOTTOM
 		display_negative_shapes.push_back(Rect2i(
 			screen.position.x, screen.position.y + screen.size.y,
-			screen.size.x, virtual_area.x - (screen.position.y + screen.size.y)))
+			screen.size.x, virtual_area.y - (screen.position.y + screen.size.y)))
 		
 		# LEFT
 		display_negative_shapes.push_back(Rect2i(
@@ -92,8 +101,8 @@ static func update_negative_shapes() -> void:
 			screen.position.x, screen.size.y))
 	
 	var screen : Rect2i
-	var n : int
-	var intersection : Rect2i
+	var n : int # for calculated index of negative for given screen, and for array size for last cull loops.
+	var intersection : Rect2i # also used for temp var for negatives in last loop.
 	
 	# TODO : cut back negatives that are intercepting with other monitors.
 	for i: int in display_screen_shapes.size():
@@ -115,14 +124,42 @@ static func update_negative_shapes() -> void:
 						display_negative_shapes[n].position.y = intersection.position.y + intersection.size.y
 						display_negative_shapes[n].size.y -= intersection.position.y + intersection.size.y
 					1: # RIGHT
-						display_negative_shapes[n].size.x = (display_negative_shapes[n].position.x + display_negative_shapes[n].size.x) - intersection.position.x
+						display_negative_shapes[n].size.x = display_negative_shapes[n].position.x - intersection.position.x
 					2: # BOTTOM
-						display_negative_shapes[n].size.y = (display_negative_shapes[n].position.y + display_negative_shapes[n].size.y) - intersection.position.y
+						display_negative_shapes[n].size.y = display_negative_shapes[n].position.y - intersection.position.y
 					3: # LEFT
 						display_negative_shapes[n].position.x = intersection.position.x + intersection.size.x
 						display_negative_shapes[n].size.x -= intersection.position.x + intersection.size.x
 	
-	# TODO : remove areas that are slim enough, or that are equal, 1-for-1.
+	# remove negatives that have no area.
+	# loop over negatives backwards so there's no index misplacement errors when deleting items in array.
+	n = display_negative_shapes.size()
+	for i: int in n:
+		# reverse index.
+		i = n - i - 1
+		intersection = display_negative_shapes[i]
+		if intersection.size.x == 0 or intersection.size.y == 0:
+			display_negative_shapes.remove_at(i)
+			continue
+	
+	# if negative is smaller than inter.
+	n = display_negative_shapes.size()
+	for i: int in n:
+		# reverse index.
+		i = n - i - 1
+		for j: int in display_negative_shapes.size():
+			if j == i:
+				continue
+			
+			intersection = display_negative_shapes[i].intersection(display_negative_shapes[j])
+			
+			if not intersection:
+				continue
+			
+			# remove if intersection is equal to current shape.
+			if display_negative_shapes[i].intersection(display_negative_shapes[j]) == display_negative_shapes[i]:
+				display_negative_shapes.remove_at(i)
+				break
 
 static func update_window_shapes() -> void:
 	pass

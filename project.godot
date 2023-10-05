@@ -16,6 +16,10 @@ config/custom_user_dir_name="kyecedar/semblance"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+semblance="*res://scripts/auto/semblance.gd"
+
 [debug]
 
 file_logging/enable_file_logging=true
