@@ -15,23 +15,29 @@ signal window_unfocus
 
 #region // Variables.
 
-var window_focused : bool = false
+var window_focused : bool = true
 
-#endregion Variables. 
+#endregion Variables. ////////////////////
 
 
 
 #region // Functions.
 
 func _ready() -> void:
-	print_rich("[wave]🦋 Semblance[/wave] v" + ProjectSettings.get_setting("application/config/version"))
+	print_rich("\n[wave amp=80.0 freq=1.0 connected=0]🦋 Semblance v" + ProjectSettings.get_setting("application/config/version") + "[/wave]\n")
 	
 	randomize()
+	
+	call_deferred("_init_window_focused")
 	
 	if Engine.is_editor_hint():
 		set_process_unhandled_input(false)
 		set_process(false)
 		return
+
+
+func _init_window_focused() -> void:
+	window_focused = get_window().has_focus()
 
 
 func _notification(what: int) -> void:

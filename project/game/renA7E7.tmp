@@ -53,12 +53,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="DataContainer" type="Control" parent="Base/ViewportAndData/HBox"]
-unique_name_in_owner = true
+[node name="Data" type="Control" parent="Base/ViewportAndData/HBox"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="DataFadeInBackground" type="Panel" parent="Base/ViewportAndData/HBox/DataContainer"]
+[node name="DataFadeInBackground" type="Panel" parent="Base/ViewportAndData/HBox/Data"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -134,9 +133,9 @@ size_flags_vertical = 3
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
-[node name="ViewportResizerVertical" type="Panel" parent="."]
+[node name="ViewportResizerTop" type="Panel" parent="."]
 unique_name_in_owner = true
-modulate = Color(0.529412, 0.839216, 0.00784314, 1)
+modulate = Color(1, 0, 0, 1)
 layout_mode = 0
 offset_left = 33.0
 offset_top = 25.0
@@ -146,15 +145,13 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_pa2mf")
 
 [node name="ViewportResizerCorner" type="Panel" parent="."]
 unique_name_in_owner = true
-modulate = Color(0.341176, 0.623529, 1, 1)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_pa2mf")
 
-[node name="ViewportResizerHorizontal" type="Panel" parent="."]
+[node name="ViewportResizerSide" type="Panel" parent="."]
 unique_name_in_owner = true
-modulate = Color(0.960784, 0.2, 0.317647, 1)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0

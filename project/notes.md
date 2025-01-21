@@ -1,0 +1,2 @@
+- dynamic sizing for character viewport, keep sizing, no matter the window size.
+- vector text enter next to viewport.

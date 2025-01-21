@@ -5,8 +5,8 @@ class_name FreqRangeMag
 
 
 
-var low       : int = 0
-var high      : int = 100
+var low       : float = 0.0
+var high      : float = 100.0
 var magnitude : float = 0.0
 var db        : float :
 	get():

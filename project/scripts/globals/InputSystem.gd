@@ -12,12 +12,12 @@ signal upon_internal_keyrelease(keypress: Keypress)
 signal upon_external_keypress(keypress: Keypress)
 signal upon_external_keyrelease(keypress: Keypress)
 
-signal upon_click()
-signal upon_upclick()
-signal upon_internal_click()
-signal upon_internal_upclick()
-signal upon_external_click()
-signal upon_external_upclick()
+#signal upon_click()
+#signal upon_upclick()
+#signal upon_internal_click()
+#signal upon_internal_upclick()
+#signal upon_external_click()
+#signal upon_external_upclick()
 
 #endregion Signals. ////////////////////
 

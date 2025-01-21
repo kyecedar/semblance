@@ -35,6 +35,7 @@ var speed_decay : float = 0.0 :
 
 #region // Functions.
 
+@warning_ignore("shadowed_variable")
 func _init(strength: float, speed: float, strength_decay: float = 0.0, speed_decay: float = 0.0) -> void:
 	self.strength = strength
 	self.speed = speed
