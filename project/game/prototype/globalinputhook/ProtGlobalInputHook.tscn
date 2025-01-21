@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckv82ekexdv0l"]
+
+[ext_resource type="Script" path="res://game/prototype/globalinputhook/prot_global_input_hook.gd" id="1_mqkvp"]
+
+[node name="ProtGlobalInputHook" type="Node"]
+script = ExtResource("1_mqkvp")

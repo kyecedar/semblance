@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bd4gm328d6sjx"]
+
+[ext_resource type="Script" path="res://game/prototype/globalinputhook/prot_bingle_shake.gd" id="1_8yce5"]
+[ext_resource type="Texture2D" uid="uid://ul1j1jblvgs6" path="res://icon.svg" id="2_10r4r"]
+
+[node name="ProtBingleShake" type="Node2D"]
+script = ExtResource("1_8yce5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(369, 244)
+texture = ExtResource("2_10r4r")
