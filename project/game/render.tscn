@@ -41,6 +41,7 @@ size_flags_vertical = 3
 theme_override_constants/separation = 0
 
 [node name="ViewportAndData" type="Control" parent="Base"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 
@@ -69,6 +70,7 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_wuuxm")
 
 [node name="ViewportContainerContainer" type="Control" parent="Base/ViewportAndData/HBox"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
 

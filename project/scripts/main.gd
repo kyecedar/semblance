@@ -110,13 +110,17 @@ func update_viewport_resize_handles() -> void:
 
 
 func drag_resizers() -> void:
+	var window_size : Vector2i = get_window().size
+	
 	match dragging_panel:
 		ResizerPosition.NONE:
 			return
 		
 		ResizerPosition.TOP:
 			pass
-			#%ViewportResizerVertical.position.y = get_local_mouse_position().y + panel_offset.y
+			#%ViewportContainerContainer.custom_minimum_size.y
+			%ViewportResizerVertical.position.y = min(max(get_local_mouse_position().y + panel_offset.y, 0.0), window_size.y - resizer_size)
+			%ViewportContainerContainer.custom_minimum_size.y = window_size.y - (%ViewportResizerVertical.position.y + resizer_size)
 		ResizerPosition.BOTTOM:
 			pass
 			#%ViewportResizerVertical.position.y = get_local_mouse_position().y + panel_offset.y
@@ -126,7 +130,9 @@ func drag_resizers() -> void:
 			#%ViewportResizerHorizontal.position.x = get_local_mouse_position().x + panel_offset.x
 		ResizerPosition.RIGHT:
 			pass
+			%ViewportResizerHorizontal.position.x = min(max(get_local_mouse_position().x + panel_offset.x, 0.0), window_size.x - resizer_size)
 			#%ViewportResizerHorizontal.position.x = get_local_mouse_position().x + panel_offset.x
+			%ViewportAndData.custom_minimum_size.x = %ViewportResizerHorizontal.position.x
 		
 		_:
 			pass
@@ -140,25 +146,37 @@ func dragging_vertical_resizer(resizer_position: ResizerPosition) -> void:
 	if dragging_panel == resizer_position:
 		return
 	
-	panel_offset = %ViewportResizerVertical.position - get_local_mouse_position()
+	panel_offset = %ViewportResizerVertical.global_position - get_local_mouse_position()
 	dragging_panel = resizer_position
 
 func dragging_corner_resizer(resizer_position: ResizerPosition) -> void:
 	if dragging_panel == resizer_position:
 		return
 	
-	panel_offset = %ViewportResizerCorner.position - get_local_mouse_position()
+	panel_offset = %ViewportResizerCorner.global_position - get_local_mouse_position()
 	dragging_panel = resizer_position
 
 func dragging_horizontal_resizer(resizer_position: ResizerPosition) -> void:
 	if dragging_panel == resizer_position:
 		return
 	
-	panel_offset = %ViewportResizerHorizontal.position - get_local_mouse_position()
+	panel_offset = %ViewportResizerHorizontal.global_position - get_local_mouse_position()
 	dragging_panel = resizer_position
 
 #endregion DRAGGING RESIZER. ////////////////////
 
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not (event is InputEventMouseButton):
+		return
+		
+	if event.button_index != MOUSE_BUTTON_LEFT:
+		return
+		
+	if event.pressed:
+		return
+	
+	dragging_panel = ResizerPosition.NONE
 
 func _on_viewport_resizer_vertical_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -170,8 +188,6 @@ func _on_viewport_resizer_vertical_gui_input(event: InputEvent) -> void:
 					dragging_vertical_resizer(ResizerPosition.TOP)
 				else:
 					dragging_vertical_resizer(ResizerPosition.BOTTOM)
-			else:
-				dragging_panel = ResizerPosition.NONE
 
 func _on_viewport_resizer_corner_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -186,8 +202,6 @@ func _on_viewport_resizer_corner_gui_input(event: InputEvent) -> void:
 						dragging_corner_resizer(ResizerPosition.TOP_RIGHT)
 					ViewportPosition.BOTTOM_RIGHT:
 						dragging_corner_resizer(ResizerPosition.TOP_LEFT)
-			else:
-				dragging_panel = ResizerPosition.NONE
 
 func _on_viewport_resizer_horizontal_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -196,11 +210,9 @@ func _on_viewport_resizer_horizontal_gui_input(event: InputEvent) -> void:
 				if \
 				viewport_position == ViewportPosition.TOP_LEFT || \
 				viewport_position == ViewportPosition.BOTTOM_LEFT:
-					dragging_vertical_resizer(ResizerPosition.RIGHT)
+					dragging_horizontal_resizer(ResizerPosition.RIGHT)
 				else:
-					dragging_vertical_resizer(ResizerPosition.LEFT)
-			else:
-				dragging_panel = ResizerPosition.NONE
+					dragging_horizontal_resizer(ResizerPosition.LEFT)
 
 
 func _set_viewport_background_color(color: Color) -> void:
